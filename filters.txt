@@ -1,6 +1,6 @@
-zzap166.com##.partner-br-wrap. .partner-banner-content
+zzap166.com##.partner-br-wrap .partner-banner-content
 zzap166.com##.video-long-banner
-zzap168.com##.partner-br-wrap. .partner-banner-content
+zzap168.com##.partner-br-wrap .partner-banner-content
 zzap168.com##.video-long-banner
 tvmon16.org##.banner_wrap2
 tvmon16.org##li.full-pc-only
