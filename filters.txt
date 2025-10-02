@@ -12,3 +12,4 @@ tvmon16.org##li.full.pc-only
 tvmon16.org##li.full.mobile-only
 tvmon16.org##section#bo_vc
 tvmon16.org##div.notice
+||tvmon16.org/data/banner^
