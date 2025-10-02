@@ -5,4 +5,4 @@ zzap168.com##.video-long-banner
 tvmon16.org##.banner_wrap2
 tvmon16.org##li.full.pc-only
 tvmon16.org##li.full.mobile-only
-
+tvmon16.org##section#bo_vc
