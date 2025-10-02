@@ -4,6 +4,26 @@
   <meta charset="utf-8" />
   <title>TVMon 최신 주소로 연결 중…</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- [추가] HTML 캐시 방지 메타 태그 -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- [추가] 항상 최신 HTML을 받도록 1회성 캐시버스터 적용 -->
+  <script>
+    // v= 파라미터가 없으면(= 캐시버스터 미적용) 즉시 한 번만 갱신된 URL로 이동
+    (function () {
+      if (!/[?&]v=/.test(location.search)) {
+        var ts = Date.now();
+        var path = location.pathname.replace(/\/+$/, "/index.html"); // 루트 접근 시도 대비
+        var search = location.search ? (location.search + "&v=" + ts) : ("?v=" + ts);
+        // GitHub Pages는 /index.html?v=... 형태도 동일 문서로 서빙하므로 안전
+        location.replace(path + search + location.hash);
+      }
+    })();
+  </script>
+
   <style>
     body {font-family: system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Malgun Gothic,sans-serif; line-height:1.6; padding:2rem; max-width:720px; margin:auto;}
     .card {border:1px solid #e5e7eb; border-radius:12px; padding:1rem 1.25rem; box-shadow:0 1px 2px rgba(0,0,0,.04);}
