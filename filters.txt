@@ -1,8 +1,14 @@
-zzap166.com##.partner-br-wrap .partner-banner-content
+zzap166.com##.partner-br-wrap
+zzap166.com##.partner-banner-content
+zzap166.com##.partner-banner-flex
 zzap166.com##.video-long-banner
-zzap167.com##.partner-br-wrap .partner-banner-content
+zzap167.com##.partner-br-wrap
+zzap167.com##.partner-banner-content
+zzap167.com##.partner-banner-flex
 zzap167.com##.video-long-banner
-zzap168.com##.partner-br-wrap .partner-banner-content
+zzap168.com##.partner-br-wrap
+zzap168.com##.partner-banner-content
+zzap168.com##.partner-banner-flex
 zzap168.com##.video-long-banner
 tvmon16.org##.banner_wrap2
 tvmon16.org##li.full.pc-only
