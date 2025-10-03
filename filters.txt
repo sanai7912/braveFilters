@@ -4,6 +4,6 @@ zzap*.com##.video-long-banner
 tvmon*.org##.banner_wrap2
 tvmon*.org##li.full.pc-only
 tvmon*.org##li.full.mobile-only
-tvmon*.org##section#bo_vc
-tvmon*.org##div.notice
+##section#bo_vc
+##div.notice
 ||tvmon*.org/data/banner^
