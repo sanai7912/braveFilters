@@ -2,8 +2,8 @@
 ##.partner-banner-flex
 ##.video-long-banner
 ##div.snb-list[onclick*="linkchak.com"]
-##div.guest-join
-##div.guest-login
+##div.members-profile-master div.guest-join
+##div.members-profile-master div.guest-login
 ##.banner_wrap2
 ##li.full.pc-only
 ##li.full.mobile-only
