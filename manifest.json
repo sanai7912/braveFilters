@@ -1,6 +1,6 @@
 {
-  "name": "Brave Filters",
-  "short_name": "Filters",
+  "name": "TV몬",
+  "short_name": "TV몬",
   "start_url": "/braveFilters/",
   "scope": "/braveFilters/",
   "display": "standalone",
