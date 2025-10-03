@@ -1,9 +1,9 @@
-zzap*.com##.partner-banner-content
-zzap*.com##.partner-banner-flex
-zzap*.com##.video-long-banner
-tvmon*.org##.banner_wrap2
-tvmon*.org##li.full.pc-only
-tvmon*.org##li.full.mobile-only
+##.partner-banner-content
+##.partner-banner-flex
+##.video-long-banner
+##.banner_wrap2
+##li.full.pc-only
+##li.full.mobile-only
 ##section#bo_vc
 ##div.notice
 ||tvmon*.org/data/banner^
