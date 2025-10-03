@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>바로가기 도우미</title>
     <style>
         /* Google Fonts에서 Noto Sans KR 폰트 가져오기 */
@@ -19,11 +19,7 @@
             --transition-speed: 0.3s;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -47,23 +43,10 @@
             border: 1px solid var(--secondary-color);
         }
 
-        header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+        header h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+        header p { font-size: 14px; color: #a0a0a0; margin-bottom: 30px; }
 
-        header p {
-            font-size: 14px;
-            color: #a0a0a0;
-            margin-bottom: 30px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
+        .button-group { display: flex; gap: 15px; margin-bottom: 25px; }
 
         .btn {
             flex: 1;
@@ -74,7 +57,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all var(--transition-speed) ease;
-            color: white;
+            color: #fff;
             background-color: var(--accent-color);
             letter-spacing: 0.5px;
         }
@@ -85,14 +68,10 @@
             filter: brightness(1.1);
         }
 
-        .btn-tvmon {
-            background: linear-gradient(45deg, #28a745, #218838);
-        }
+        .btn-tvmon { background: linear-gradient(45deg, #28a745, #218838); }
         .btn-tvmon:hover { box-shadow: 0 6px 20px rgba(40, 167, 69, 0.2); }
 
-        .btn-zzapflix {
-            background: linear-gradient(45deg, #dc3545, #c82333);
-        }
+        .btn-zzapflix { background: linear-gradient(45deg, #dc3545, #c82333); }
         .btn-zzapflix:hover { box-shadow: 0 6px 20px rgba(220, 53, 69, 0.2); }
 
         .status-box {
@@ -114,7 +93,7 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .loader {
             width: 16px;
             height: 16px;
@@ -136,11 +115,6 @@
             display: none; /* Initially hidden */
         }
         .btn-cancel:hover { background-color: #5a6268; }
-
-        .hidden {
-            display: none;
-        }
-
     </style>
 </head>
 <body>
@@ -180,13 +154,28 @@
                 // CORS 프록시를 사용하여 대상 URL의 HTML을 가져옵니다.
                 fetchUrl: "https://api.allorigins.win/raw?url=https://tvmonnewaddress.com/",
                 // 찾아야 할 링크의 정규식 패턴입니다. 예: https://tvmon16.org/
-                pattern: /^https:\/\/tvmon\d+\.org\/?$/
+                pattern: /^https:\/\/tvmon\d+\.org\/?$/,
+                // 찾은 기본 도메인에 인기 경로를 붙입니다. 예: https://tvmon16.org/popular
+                buildUrl: (base) => {
+                    const u = new URL(base);
+                    u.pathname = "/popular";
+                    u.search = "";
+                    return u.toString();
+                }
             },
             zzapflix: {
                 name: "짭플릭스",
                 fetchUrl: "https://api.allorigins.win/raw?url=https://linkchak.com/index.html",
                 // 찾아야 할 링크의 정규식 패턴입니다. 예: https://zzap168.com
-                pattern: /^https:\/\/zzap\d+\.com\/?$/
+                pattern: /^https:\/\/zzap\d+\.com\/?$/,
+                // 찾은 기본 도메인에 인기영상 쿼리를 붙입니다.
+                // 예: https://zzap168.com/vodlist.php?type_id_1=&order_type=vod_hits
+                buildUrl: (base) => {
+                    const u = new URL(base);
+                    u.pathname = "/vodlist.php";
+                    u.search = "type_id_1=&order_type=vod_hits";
+                    return u.toString();
+                }
             }
         };
 
@@ -197,7 +186,7 @@
         };
 
         const findAndRedirect = async (site) => {
-            // AbortController를 새로 생성하여 이전 작업을 취소할 수 있도록 함
+            // 이전 진행 중 작업 취소 가능하도록 새 AbortController 생성
             abortController = new AbortController();
             const signal = abortController.signal;
 
@@ -205,7 +194,6 @@
                 updateStatus(`${site.name} 사이트에 접속 중...`, true);
 
                 const response = await fetch(site.fetchUrl, { signal });
-                
                 if (!response.ok) {
                     throw new Error(`HTTP 에러! 상태: ${response.status}`);
                 }
@@ -213,7 +201,7 @@
                 updateStatus('링크 주소 찾는 중...', true);
                 const html = await response.text();
 
-                // DOMParser를 사용해 텍스트를 HTML 문서로 파싱
+                // DOMParser로 HTML 파싱
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
                 const links = doc.querySelectorAll('a');
@@ -229,13 +217,12 @@
                 }
 
                 if (foundUrl) {
-                    updateStatus(`'${foundUrl}' 주소를 찾았습니다. 이동합니다!`);
-                    // 찾은 주소로 페이지를 리디렉션
-                    window.location.href = foundUrl;
+                    const finalUrl = site.buildUrl ? site.buildUrl(foundUrl) : foundUrl;
+                    updateStatus(`'${finalUrl}' 주소를 찾았습니다. 이동합니다!`);
+                    window.location.href = finalUrl;
                 } else {
                     updateStatus(`${site.name}에서 유효한 주소를 찾지 못했습니다.`, false);
                 }
-
             } catch (error) {
                 if (error.name === 'AbortError') {
                     updateStatus('작업이 사용자에 의해 취소되었습니다.', false);
@@ -256,7 +243,6 @@
 
         cancelBtn.addEventListener('click', () => {
             if (abortController) {
-                // 진행 중인 fetch 요청을 취소
                 abortController.abort();
             }
         });
