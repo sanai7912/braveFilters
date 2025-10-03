@@ -1,8 +1,7 @@
 ##.partner-banner-content
 ##.partner-banner-flex
 ##.video-long-banner
-##div.snb-list:has(span:has-text(스포츠))
-##div.snb-list:has(span:has-text(성인))
+##div.snb-list[onclick*="linkchak.com"]
 ##.banner_wrap2
 ##li.full.pc-only
 ##li.full.mobile-only
