@@ -9,4 +9,5 @@
 ##li.full.mobile-only
 ##section#bo_vc
 ##div.notice
+##div#header_wrap a.btn_login[href="/login"]
 ||tvmon*.org/data/banner^
