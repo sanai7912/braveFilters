@@ -158,7 +158,7 @@
     let abortController;
     let timeoutId;
 
-    // 공통: 상태 표시 유틸
+    // 공통: 상태 표시
     const updateStatus = (message, isLoading = false) => {
       statusText.textContent = message;
       loader.style.display = isLoading ? 'inline-block' : 'none';
@@ -188,16 +188,16 @@
       },
       zzapflix: {
         name: "짭플릭스",
-        // CORS 프록시를 사용하여 대상 URL의 HTML을 가져옵니다.
+        // CORS 프록시로 링크 모음 페이지를 가져옴
         fetchUrl: "https://api.allorigins.win/raw?url=https://linkchak.com/index.html",
-        // 정규식: http/https 모두 허용, 숫자 캡처
-        // 예: https://zzap171.com/
+        // 정규식: http/https 모두 허용, 숫자 캡처 (예: https://zzap171.com/)
         pattern: /^https?:\/\/zzap(\d+)\.com\/?$/i,
-        // 최종 이동 URL 생성
+        // ✅ 루트로만 이동 (경로/쿼리 제거)
         buildUrl: (base) => {
           const u = new URL(base);
-          u.pathname = "/vodlist.php";
-          u.search = "type_id_1=&order_type=vod_hits";
+          u.pathname = "/";
+          u.search = "";
+          u.hash = "";
           return u.toString();
         }
       }
@@ -209,21 +209,18 @@
       // 약간의 UX 지연(로더 표시) 후 이동
       setTimeout(() => {
         window.location.href = sites.tvmon.directUrl;
-      }, 400);
+      }, 300);
     };
 
-    // 짭플릭스: 최신 주소(최대 숫자) 선택 후 이동
+    // 짭플릭스: 최신 주소(최대 숫자) 선택 후 루트로 이동
     const goZzapflix = async () => {
-      // 이전 진행 중 작업 취소 가능하도록 새 AbortController는 fetchWithTimeout에서 생성
       try {
         updateStatus("짭플릭스 사이트에 접속 중...", true);
 
         const response = await fetchWithTimeout(sites.zzapflix.fetchUrl, {}, 10000);
-        if (!response.ok) {
-          throw new Error(`HTTP 에러! 상태: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP 에러! 상태: ${response.status}`);
 
-        updateStatus("링크 주소 찾는 중...", true);
+        updateStatus("최신 주소를 찾는 중...", true);
         const html = await response.text();
 
         // 1차: DOM 파싱 후 a 태그 href에서 검색
@@ -231,28 +228,12 @@
         const doc = parser.parseFromString(html, "text/html");
         const links = Array.from(doc.querySelectorAll("a"));
 
-        let candidates = [];
+        const candidates = [];
 
         for (const a of links) {
-          const href = a.getAttribute("href") || "";
-          // 절대/상대/프로토콜 없는 경우를 모두 처리
-          let absolute;
-          try {
-            absolute = new URL(href, "https://dummy.base").href
-              .replace("https://dummy.base", ""); // 상대경로면 그대로 두고 넘어감
-          } catch (_) {
-            absolute = href;
-          }
-
-          // 프로토콜 명시된 경우만 검사
-          const val = a.href || href;
-          if (!val) continue;
-
+          const val = a.href || "";
           const m = val.match(sites.zzapflix.pattern);
-          if (m) {
-            const num = parseInt(m[1], 10);
-            candidates.push({ num, url: m[0] });
-          }
+          if (m) candidates.push({ num: parseInt(m[1], 10), url: m[0] });
         }
 
         // 2차(백업): a 태그에서 못 찾으면 HTML 전체 문자열에서 정규식 매치
@@ -260,8 +241,7 @@
           const re = new RegExp(sites.zzapflix.pattern, "gi");
           let m;
           while ((m = re.exec(html)) !== null) {
-            const num = parseInt(m[1], 10);
-            candidates.push({ num, url: m[0] });
+            candidates.push({ num: parseInt(m[1], 10), url: m[0] });
           }
         }
 
@@ -270,7 +250,7 @@
           candidates.sort((a, b) => b.num - a.num);
           const newest = candidates[0].url.replace(/^http:/i, "https:"); // http 나오면 https로 통일
           const finalUrl = sites.zzapflix.buildUrl(newest.endsWith("/") ? newest : newest + "/");
-          updateStatus(`최신 주소를 찾았습니다. 이동합니다!`);
+          updateStatus("최신 주소를 찾았습니다. 이동합니다!");
           window.location.href = finalUrl;
         } else {
           updateStatus("유효한 짭플릭스 주소를 찾지 못했습니다.", false);
