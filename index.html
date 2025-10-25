@@ -1,261 +1,303 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>티비몬</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>티비몬</title>
 
-    <!-- Android용: manifest -->
+  <!-- Android용: manifest -->
   <link rel="manifest" href="/braveFilters/manifest.json">
 
   <!-- iOS용: 아이콘 & 이름 -->
   <link rel="apple-touch-icon" href="/braveFilters/icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Brave Filters">
-    
-    <style>
-        /* Google Fonts에서 Noto Sans KR 폰트 가져오기 */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
-        :root {
-            --bg-color: #1a1a1a;
-            --primary-color: #2a2a2a;
-            --secondary-color: #3a3a3a;
-            --accent-color: #007bff;
-            --text-color: #e0e0e0;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            --transition-speed: 0.3s;
-        }
+  <style>
+    /* Google Fonts에서 Noto Sans KR 폰트 가져오기 */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-color: #1a1a1a;
+      --primary-color: #2a2a2a;
+      --secondary-color: #3a3a3a;
+      --accent-color: #007bff;
+      --text-color: #e0e0e0;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      --transition-speed: 0.3s;
+    }
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container {
-            width: 100%;
-            max-width: 400px;
-            background-color: var(--primary-color);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 30px;
-            text-align: center;
-            border: 1px solid var(--secondary-color);
-        }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-        header h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
-        header p { font-size: 14px; color: #a0a0a0; margin-bottom: 30px; }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background-color: var(--primary-color);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 30px;
+      text-align: center;
+      border: 1px solid var(--secondary-color);
+    }
 
-        .button-group { display: flex; gap: 15px; margin-bottom: 25px; }
+    header h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    header p { font-size: 14px; color: #a0a0a0; margin-bottom: 30px; }
 
-        .btn {
-            flex: 1;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            color: #fff;
-            background-color: var(--accent-color);
-            letter-spacing: 0.5px;
-        }
+    .button-group { display: flex; gap: 15px; margin-bottom: 25px; }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
-            filter: brightness(1.1);
-        }
+    .btn {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+      color: #fff;
+      background-color: var(--accent-color);
+      letter-spacing: 0.5px;
+    }
 
-        .btn-tvmon { background: linear-gradient(45deg, #28a745, #218838); }
-        .btn-tvmon:hover { box-shadow: 0 6px 20px rgba(40, 167, 69, 0.2); }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
+      filter: brightness(1.1);
+    }
 
-        .btn-zzapflix { background: linear-gradient(45deg, #dc3545, #c82333); }
-        .btn-zzapflix:hover { box-shadow: 0 6px 20px rgba(220, 53, 69, 0.2); }
+    .btn-tvmon { background: linear-gradient(45deg, #28a745, #218838); }
+    .btn-tvmon:hover { box-shadow: 0 6px 20px rgba(40, 167, 69, 0.2); }
 
-        .status-box {
-            background-color: var(--secondary-color);
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: background-color var(--transition-speed) ease;
-        }
+    .btn-zzapflix { background: linear-gradient(45deg, #dc3545, #c82333); }
+    .btn-zzapflix:hover { box-shadow: 0 6px 20px rgba(220, 53, 69, 0.2); }
 
-        .status-message {
-            font-size: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .status-box {
+      background-color: var(--secondary-color);
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: background-color var(--transition-speed) ease;
+    }
 
-        .loader {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #fff;
-            border-bottom-color: transparent;
-            border-radius: 50%;
-            display: none; /* Initially hidden */
-            animation: rotation 1s linear infinite;
-        }
+    .status-message {
+      font-size: 15px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    .loader {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #fff;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      display: none; /* Initially hidden */
+      animation: rotation 1s linear infinite;
+    }
 
-        .btn-cancel {
-            background-color: #6c757d;
-            padding: 8px 20px;
-            display: none; /* Initially hidden */
-        }
-        .btn-cancel:hover { background-color: #5a6268; }
-    </style>
+    @keyframes rotation {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn-cancel {
+      background-color: #6c757d;
+      padding: 8px 20px;
+      display: none; /* Initially hidden */
+    }
+    .btn-cancel:hover { background-color: #5a6268; }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>바로가기 도우미</h1>
-            <p>원하는 사이트 버튼을 클릭하세요.</p>
-        </header>
+  <div class="container">
+    <header>
+      <h1>바로가기 도우미</h1>
+      <p>원하는 사이트 버튼을 클릭하세요.</p>
+    </header>
 
-        <div class="button-group">
-            <button class="btn btn-tvmon" id="tvmonBtn">티비몬</button>
-            <button class="btn btn-zzapflix" id="zzapflixBtn">짭플릭스</button>
-        </div>
-
-        <div class="status-box">
-            <div id="statusMessage" class="status-message">
-                <div id="loader" class="loader"></div>
-                <span id="statusText">대기 중...</span>
-            </div>
-            <button class="btn btn-cancel" id="cancelBtn">취소</button>
-        </div>
+    <div class="button-group">
+      <button class="btn btn-tvmon" id="tvmonBtn">티비몬</button>
+      <button class="btn btn-zzapflix" id="zzapflixBtn">짭플릭스</button>
     </div>
 
-    <script>
-        const tvmonBtn = document.getElementById('tvmonBtn');
-        const zzapflixBtn = document.getElementById('zzapflixBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const statusText = document.getElementById('statusText');
-        const loader = document.getElementById('loader');
+    <div class="status-box">
+      <div id="statusMessage" class="status-message">
+        <div id="loader" class="loader"></div>
+        <span id="statusText">대기 중...</span>
+      </div>
+      <button class="btn btn-cancel" id="cancelBtn">취소</button>
+    </div>
+  </div>
 
-        let abortController;
+  <script>
+    const tvmonBtn = document.getElementById('tvmonBtn');
+    const zzapflixBtn = document.getElementById('zzapflixBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const statusText = document.getElementById('statusText');
+    const loader = document.getElementById('loader');
 
-        const sites = {
-            tvmon: {
-                name: "티비몬",
-                // CORS 프록시를 사용하여 대상 URL의 HTML을 가져옵니다.
-                fetchUrl: "https://api.allorigins.win/raw?url=https://tvmonnewaddress.com/",
-                // 찾아야 할 링크의 정규식 패턴입니다. 예: https://tvmon16.org/
-                pattern: /^https:\/\/tvmon\d+\.org\/?$/,
-                // 찾은 기본 도메인에 인기 경로를 붙입니다. 예: https://tvmon16.org/popular
-                buildUrl: (base) => {
-                    const u = new URL(base);
-                    u.pathname = "/mobile";
-                    u.search = "";
-                    return u.toString();
-                }
-            },
-            zzapflix: {
-                name: "짭플릭스",
-                fetchUrl: "https://api.allorigins.win/raw?url=https://linkchak.com/index.html",
-                // 찾아야 할 링크의 정규식 패턴입니다. 예: https://zzap168.com
-                pattern: /^https:\/\/zzap\d+\.com\/?$/,
-                // 찾은 기본 도메인에 인기영상 쿼리를 붙입니다.
-                // 예: https://zzap168.com/vodlist.php?type_id_1=&order_type=vod_hits
-                buildUrl: (base) => {
-                    const u = new URL(base);
-                    u.pathname = "/vodlist.php";
-                    u.search = "type_id_1=&order_type=vod_hits";
-                    return u.toString();
-                }
-            }
-        };
+    let abortController;
+    let timeoutId;
 
-        const updateStatus = (message, isLoading = false) => {
-            statusText.textContent = message;
-            loader.style.display = isLoading ? 'inline-block' : 'none';
-            cancelBtn.style.display = isLoading ? 'block' : 'none';
-        };
+    // 공통: 상태 표시 유틸
+    const updateStatus = (message, isLoading = false) => {
+      statusText.textContent = message;
+      loader.style.display = isLoading ? 'inline-block' : 'none';
+      cancelBtn.style.display = isLoading ? 'block' : 'none';
+    };
 
-        const findAndRedirect = async (site) => {
-            // 이전 진행 중 작업 취소 가능하도록 새 AbortController 생성
-            abortController = new AbortController();
-            const signal = abortController.signal;
+    // 공통: 타임아웃 적용 fetch
+    const fetchWithTimeout = (url, options = {}, ms = 10000) => {
+      const controller = new AbortController();
+      const { signal } = controller;
+      const merged = { ...options, signal };
 
-            try {
-                updateStatus(`${site.name} 사이트에 접속 중...`, true);
+      // 외부에서 취소 가능하도록 최신 controller 보관
+      abortController = controller;
 
-                const response = await fetch(site.fetchUrl, { signal });
-                if (!response.ok) {
-                    throw new Error(`HTTP 에러! 상태: ${response.status}`);
-                }
+      // 타임아웃
+      timeoutId = setTimeout(() => controller.abort(), ms);
+      return fetch(url, merged).finally(() => clearTimeout(timeoutId));
+    };
 
-                updateStatus('링크 주소 찾는 중...', true);
-                const html = await response.text();
+    // 대상 사이트 설정
+    const sites = {
+      tvmon: {
+        name: "티비몬",
+        // 요구사항: 항상 tvmon.site로 바로 이동
+        directUrl: "https://tvmon.site/"
+      },
+      zzapflix: {
+        name: "짭플릭스",
+        // CORS 프록시를 사용하여 대상 URL의 HTML을 가져옵니다.
+        fetchUrl: "https://api.allorigins.win/raw?url=https://linkchak.com/index.html",
+        // 정규식: http/https 모두 허용, 숫자 캡처
+        // 예: https://zzap171.com/
+        pattern: /^https?:\/\/zzap(\d+)\.com\/?$/i,
+        // 최종 이동 URL 생성
+        buildUrl: (base) => {
+          const u = new URL(base);
+          u.pathname = "/vodlist.php";
+          u.search = "type_id_1=&order_type=vod_hits";
+          return u.toString();
+        }
+      }
+    };
 
-                // DOMParser로 HTML 파싱
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const links = doc.querySelectorAll('a');
+    // 티비몬: 단순 이동
+    const goTvmon = () => {
+      updateStatus("티비몬으로 이동합니다...", true);
+      // 약간의 UX 지연(로더 표시) 후 이동
+      setTimeout(() => {
+        window.location.href = sites.tvmon.directUrl;
+      }, 400);
+    };
 
-                let foundUrl = null;
-                for (const link of links) {
-                    const href = link.href;
-                    // 정규식 패턴과 일치하는 href를 찾음
-                    if (site.pattern.test(href)) {
-                        foundUrl = href;
-                        break;
-                    }
-                }
+    // 짭플릭스: 최신 주소(최대 숫자) 선택 후 이동
+    const goZzapflix = async () => {
+      // 이전 진행 중 작업 취소 가능하도록 새 AbortController는 fetchWithTimeout에서 생성
+      try {
+        updateStatus("짭플릭스 사이트에 접속 중...", true);
 
-                if (foundUrl) {
-                    const finalUrl = site.buildUrl ? site.buildUrl(foundUrl) : foundUrl;
-                    updateStatus(`'${finalUrl}' 주소를 찾았습니다. 이동합니다!`);
-                    window.location.href = finalUrl;
-                } else {
-                    updateStatus(`${site.name}에서 유효한 주소를 찾지 못했습니다.`, false);
-                }
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    updateStatus('작업이 사용자에 의해 취소되었습니다.', false);
-                } else {
-                    console.error('오류 발생:', error);
-                    updateStatus('오류가 발생했습니다. 다시 시도해주세요.', false);
-                }
-            }
-        };
+        const response = await fetchWithTimeout(sites.zzapflix.fetchUrl, {}, 10000);
+        if (!response.ok) {
+          throw new Error(`HTTP 에러! 상태: ${response.status}`);
+        }
 
-        tvmonBtn.addEventListener('click', () => {
-            findAndRedirect(sites.tvmon);
-        });
+        updateStatus("링크 주소 찾는 중...", true);
+        const html = await response.text();
 
-        zzapflixBtn.addEventListener('click', () => {
-            findAndRedirect(sites.zzapflix);
-        });
+        // 1차: DOM 파싱 후 a 태그 href에서 검색
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const links = Array.from(doc.querySelectorAll("a"));
 
-        cancelBtn.addEventListener('click', () => {
-            if (abortController) {
-                abortController.abort();
-            }
-        });
-    </script>
+        let candidates = [];
+
+        for (const a of links) {
+          const href = a.getAttribute("href") || "";
+          // 절대/상대/프로토콜 없는 경우를 모두 처리
+          let absolute;
+          try {
+            absolute = new URL(href, "https://dummy.base").href
+              .replace("https://dummy.base", ""); // 상대경로면 그대로 두고 넘어감
+          } catch (_) {
+            absolute = href;
+          }
+
+          // 프로토콜 명시된 경우만 검사
+          const val = a.href || href;
+          if (!val) continue;
+
+          const m = val.match(sites.zzapflix.pattern);
+          if (m) {
+            const num = parseInt(m[1], 10);
+            candidates.push({ num, url: m[0] });
+          }
+        }
+
+        // 2차(백업): a 태그에서 못 찾으면 HTML 전체 문자열에서 정규식 매치
+        if (candidates.length === 0) {
+          const re = new RegExp(sites.zzapflix.pattern, "gi");
+          let m;
+          while ((m = re.exec(html)) !== null) {
+            const num = parseInt(m[1], 10);
+            candidates.push({ num, url: m[0] });
+          }
+        }
+
+        if (candidates.length > 0) {
+          // 숫자 최댓값(최신) 선택
+          candidates.sort((a, b) => b.num - a.num);
+          const newest = candidates[0].url.replace(/^http:/i, "https:"); // http 나오면 https로 통일
+          const finalUrl = sites.zzapflix.buildUrl(newest.endsWith("/") ? newest : newest + "/");
+          updateStatus(`최신 주소를 찾았습니다. 이동합니다!`);
+          window.location.href = finalUrl;
+        } else {
+          updateStatus("유효한 짭플릭스 주소를 찾지 못했습니다.", false);
+        }
+      } catch (error) {
+        if (error.name === "AbortError") {
+          updateStatus("작업이 사용자에 의해 취소되었습니다.", false);
+        } else {
+          console.error("오류 발생:", error);
+          updateStatus("오류가 발생했습니다. 다시 시도해주세요.", false);
+        }
+      }
+    };
+
+    // 이벤트 바인딩
+    tvmonBtn.addEventListener("click", goTvmon);
+    zzapflixBtn.addEventListener("click", goZzapflix);
+
+    cancelBtn.addEventListener("click", () => {
+      try {
+        if (abortController) abortController.abort();
+        if (timeoutId) clearTimeout(timeoutId);
+      } finally {
+        updateStatus("작업이 취소되었습니다.", false);
+      }
+    });
+  </script>
 
 </body>
 </html>
